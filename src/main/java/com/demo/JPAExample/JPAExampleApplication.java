@@ -78,6 +78,7 @@ public class JPAExampleApplication {
         Query q = em.createQuery("Select m.teacher, count(m) from MeetingSlot m where m.startTime < CURRENT_TIME group by m.teacher.id");
         List<Object[]> resultList = q.getResultList();
         resultList.forEach(r -> System.out.println(Arrays.toString(r)));
+        System.out.println("------------------------------");
     }
 
     private static void getTeacherTotalMeetings(EntityManager em) {

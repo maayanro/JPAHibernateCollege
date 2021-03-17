@@ -32,7 +32,6 @@ public class JPAExampleApplication {
 
         s1.addTeacher(t);
         s2.addTeacher(t);
-
         t.addStudent(s1);
         t.addStudent(s2);
 
@@ -44,31 +43,29 @@ public class JPAExampleApplication {
         LocalDateTime start = LocalDateTime.of(2021,8,10,13,00);
         LocalDateTime end = LocalDateTime.of(2021,8,10,13,30);
         MeetingSlot meeting = new MeetingSlot(start, end, s1, t);
-        t.createAMeetingSlot(meeting);
-        s1.registerToMeetingSlot(meeting);
         em.persist(meeting);
 
         start = LocalDateTime.of(2021,3,15,13,00);
         end = LocalDateTime.of(2021,3,15,13,30);
         meeting = new MeetingSlot(start, end, s2, t);
-        t.createAMeetingSlot(meeting);
-        s2.registerToMeetingSlot(meeting);
         em.persist(meeting);
 
         start = LocalDateTime.of(2021,4,28,12,30);
         end = LocalDateTime.of(2021,4,28,13,30);
         meeting = new MeetingSlot(start, end, s2, t);
-        t.createAMeetingSlot(meeting);
-        s2.registerToMeetingSlot(meeting);
         em.persist(meeting);
 
         em.getTransaction().commit();
 
         findAllStudentsWithMeetingOfTeacher(em, 3L);
+
         LocalDate meetingDate = LocalDate.of(2021, 3, 1);
         findAllStudentsWithMeetingOfTeacher(em, 3L, meetingDate);
+
         getAllStudentFutureMeeting(em, 2L);
+
         getTeacherTotalMeetings(em);
+
         getTeacherPastTotalMeetings(em);
 
         em.close();
@@ -85,39 +82,45 @@ public class JPAExampleApplication {
 
     private static void getTeacherTotalMeetings(EntityManager em) {
 
-        System.out.println("---getTeacherTotalMeetings---");
+        System.out.println("getTeacherTotalMeetings");
         Query q = em.createQuery("Select m.teacher, count(m) from MeetingSlot m group by m.teacher.id");
         List<Object[]> resultList = q.getResultList();
         resultList.forEach(r -> System.out.println(Arrays.toString(r)));
+        System.out.println("------------------------------");
     }
 
     private static void getAllStudentFutureMeeting(EntityManager em, long studentId) {
 
-        System.out.println("---getAllStudentFutureMeeting---");
+        System.out.println("getAllStudentFutureMeeting");
         Query q = em.createQuery("Select m from MeetingSlot m where m.student.id=:studentId and m.startTime > CURRENT_TIME");
         q.setParameter("studentId", studentId);
         q.getResultList().forEach(meeting -> System.out.println(meeting));
+        System.out.println("------------------------------");
     }
 
     private static void findAllStudentsWithMeetingOfTeacher(EntityManager em, long teacherId, LocalDate meetingDate) {
 
         LocalDateTime startDay = meetingDate.atStartOfDay();
         LocalDateTime endDay = LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT);
-        System.out.println("---findAllStudentsWithMeetingOfTeacherInCertainDate---");
+        System.out.println("findAllStudentsWithMeetingOfTeacherInCertainDate");
         Query q = em.createQuery("Select distinct m.student from MeetingSlot m where m.teacher.id=:id and m.startTime between :startDay and :endDay");
         q.setParameter("id", teacherId);
         q.setParameter("startDay", startDay);
         q.setParameter("endDay", endDay);
         q.getResultList().forEach(student -> System.out.println(student));
+        System.out.println("------------------------------");
+
     }
 
     private static void findAllStudentsWithMeetingOfTeacher(EntityManager em, long teacherId) {
 
-        System.out.println("---findAllStudentsWithMeetingOfTeacher---");
+        System.out.println("findAllStudentsWithMeetingOfTeacher");
         Query q = em.createQuery("Select distinct m.student from MeetingSlot m where m.teacher.id=:id");
         q.setParameter("id", teacherId);
         List<Student> results = q.getResultList();
         results.forEach(student -> System.out.println(student));
+        System.out.println("------------------------------");
+
     }
 
 

@@ -13,13 +13,19 @@ public class MeetingSlot {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 
-    /*@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "student_id", referencedColumnName = "id")*/
+    //a meeting slot can have only one student - many slots to one student
+    //hibernate define for us
+    //@ManyToOne
+    //@JoinColumn(name = "student_id", referencedColumnName = "id")
+    //fetch = FetchType.EAGER by default
     @ManyToOne
     private Student student;
 
-    /*@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "teacher_id", referencedColumnName = "id"*/
+    //a meeting slot can have only one teacher - many slots to one teacher
+    //hibernate define for us
+    //@ManyToOne
+    //@JoinColumn(name = "teacher_id", referencedColumnName = "id")
+    //fetch = FetchType.EAGER by default
     @ManyToOne
     private Teacher teacher;
 

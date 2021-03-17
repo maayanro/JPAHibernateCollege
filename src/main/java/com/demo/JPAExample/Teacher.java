@@ -1,7 +1,7 @@
 package com.demo.JPAExample;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import java.io.Serializable;
@@ -11,10 +11,12 @@ import java.util.List;
 @Entity
 public class Teacher extends User implements Serializable {
 
+    //a student can has multiple teachers, and a teacher can teach  multiple students
     @ManyToMany
     private List<Student> students;
 
-    @OneToMany(mappedBy = "teacher", fetch = FetchType.EAGER)
+    //when we persist meetingSlot persist the meetingSlot of the teacher also
+    @OneToMany(mappedBy = "teacher", cascade = CascadeType.PERSIST)
     private List<MeetingSlot> meetingSlots;
 
     protected Teacher() {
@@ -33,14 +35,6 @@ public class Teacher extends User implements Serializable {
             students = new ArrayList<>();
         }
         this.students.add(student);
-    }
-
-    public boolean createAMeetingSlot(MeetingSlot meetingSlot) {
-        if(meetingSlots == null) {
-            meetingSlots = new ArrayList<>();
-        }
-        this.meetingSlots.add(meetingSlot);
-        return true;
     }
 
     public List<MeetingSlot> getMeetingSlots() {

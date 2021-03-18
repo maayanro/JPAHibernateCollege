@@ -4,18 +4,17 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Teacher extends User implements Serializable {
+public class Teacher extends User {
 
-    //a student can has multiple teachers, and a teacher can teach  multiple students
+    //a student can have multiple teachers, and a teacher can teach  multiple students
     @ManyToMany
-    private List<Student> students;
+    private List<Student> students = new ArrayList<>();
 
-    //when we persist meetingSlot persist the meetingSlot of the teacher also
+    //when we persist a meetingSlot hibernate will persist the meetingSlot of the teacher also
     @OneToMany(mappedBy = "teacher", cascade = CascadeType.PERSIST)
     private List<MeetingSlot> meetingSlots;
 
@@ -31,9 +30,6 @@ public class Teacher extends User implements Serializable {
     }
 
     public void addStudent(Student student) {
-        if(students == null) {
-            students = new ArrayList<>();
-        }
         this.students.add(student);
     }
 

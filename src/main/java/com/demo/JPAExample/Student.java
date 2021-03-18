@@ -10,7 +10,7 @@ import java.util.List;
 @Entity
 public class Student extends User {
 
-    //a student can has multiple teachers, and a teacher can teach  multiple students
+    //a student can have multiple teachers, and a teacher can teach  multiple students
     //hibernate define for us
     /*@ManyToMany
     @JoinTable(
@@ -19,7 +19,7 @@ public class Student extends User {
             inverseJoinColumns = @JoinColumn(name = "teacher_id", referencedColumnName = "id")
     )*/
     @ManyToMany
-    private List<Teacher> teachers;
+    private List<Teacher> teachers = new ArrayList<>();
 
     //it's a good practice to put the owning side of a relationship in the class where the foreign key
     //we still want to have access to student's meetingSlot so we define a bidirectional relationship with mapped key
@@ -39,9 +39,6 @@ public class Student extends User {
     }
 
     public void addTeacher(Teacher teacher) {
-        if(teachers == null) {
-            teachers = new ArrayList<>();
-        }
         this.teachers.add(teacher);
     }
 
